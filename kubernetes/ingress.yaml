@@ -1,0 +1,32 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: wanderlust-ingress
+  namespace: wanderlust
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"  # Redirect all HTTP traffic to HTTPS
+    nginx.ingress.kubernetes.io/secure-backends: "true"  # Ensure communication with backend is secure
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"  # Use HTTPS to communicate with backend services
+spec:
+  rules:
+    - host: k8s.xemailwarmup.com  # Your domain
+      http:
+        paths:
+        - path: /api  # Route for the backend service (adjust path as necessary)
+          pathType: Prefix
+          backend:
+            service:
+              name: backend-service  # The backend service name
+              port:
+                number: 8080
+        - path: /  # Route for the frontend service
+          pathType: Prefix
+          backend:
+            service:
+              name: frontend-service  # The frontend service name (adjust if needed)
+              port:
+                number: 80
+  tls:
+  - hosts:
+    - k8s.xemailwarmup.com  # Your domain for SSL
+    secretName: my-ssl-secret  # Name of the secret storing the SSL certificate

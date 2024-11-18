@@ -6,21 +6,22 @@ metadata:
   labels:
     app: backend
 spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: backend
-  template:
-    metadata:
-      name: backend
-      labels:
-        app: backend
-    spec:
       containers:
         - name: backend
           image: xgrowthllc/k8s-backend:latest
           ports:
             - containerPort: 3301
+          env:
+            - name: DB_HOST
+              value: "mysql-service"
+            - name: DB_PORT
+              value: "3306"
+            - name: DB_USER
+              value: "XGROWTH"
+            - name: DB_PASSWORD
+              value: "gzEeAPnALMsfTefnkr5Ft5wCbWHEWJVDlb1kMvFC5c8="
+            - name: DB_DATABASE
+              value: "PROD_WARMUP"
 ---
 apiVersion: v1
 kind: Service

@@ -17,18 +17,26 @@ spec:
         app: mongo
     spec:
       containers:
-        - name: mongo
-          image: mongo
+        - name: mysql
+          image: mysql:8
           ports:
-            - containerPort: 27017
+            - containerPort: 3306
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: "gzEeAPnALMsfTefnkr5Ft5wCbWHEWJVDlb1kMvFC5c8="
+            - name: MYSQL_DATABASE
+              value: "PROD_WARMUP"
+            - name: MYSQL_USER
+              value: "XGROWTH"
+            - name: MYSQL_PASSWORD
+              value: "gzEeAPnALMsfTefnkr5Ft5wCbWHEWJVDlb1kMvFC5c8="
           volumeMounts:
-            - name: mongo-storage
-              mountPath: /data/db
+            - name: mysql-storage
+              mountPath: /var/lib/mysql
       volumes:
-        - name: mongo-storage
+        - name: mysql-storage
           persistentVolumeClaim:
-            claimName: mongo-pvc
-
+            claimName: mysql-pvc
 ---
 apiVersion: v1
 kind: Service
